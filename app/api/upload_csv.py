@@ -12,9 +12,8 @@ router = APIRouter()
 async def upload_csv(uploaded_file: UploadFile):
     if uploaded_file.filename.endswith(".csv"):
         data_parser = DataParser(uploaded_file=uploaded_file)
-        data_parser.parse_file()
+        transactions = data_parser.parse_file()
 
-        # parse data
         # store in db
 
         return {"Upload successful!"}

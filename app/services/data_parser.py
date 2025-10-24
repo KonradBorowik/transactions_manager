@@ -37,4 +37,4 @@ class DataParser:
             line: str = line.decode("utf-8").rstrip("\n")
             transactions.append(self._parse_line(line=line.strip("\\n"), line_no=line_no))
         
-        
+        return transactions
