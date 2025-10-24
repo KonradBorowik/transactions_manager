@@ -7,4 +7,4 @@ from app.db.session import engine, Base
 app = FastAPI()
 app.include_router(upload_csv.router, prefix="/api", tags=["Upload CSV"])
 
-# Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
