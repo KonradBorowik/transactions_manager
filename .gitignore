@@ -1,4 +1,4 @@
-__cache__
+__pycache__
 .venv
 .vscode
 .db
