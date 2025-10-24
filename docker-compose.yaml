@@ -1,0 +1,27 @@
+version: '3s'
+
+services:
+  transactions_manager:
+    build: .
+    depends_on:
+      - db
+    volumes:
+      - ./:/app:ro
+    environment:
+      - DATABASE_URL=postgresql://alterdata:alterdata@db:5432/alterdata_db
+    ports:
+      - "8000:8000"
+
+  db:
+    image: postgres:alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    environment:
+        - POSTGRES_USER=alterdata
+        - POSTGRES_PASSWORD=alterdata
+        - POSTGRES_DB=alterdata_db
+
+volumes:
+  postgres_data:
