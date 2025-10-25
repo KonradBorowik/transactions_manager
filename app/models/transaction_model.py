@@ -6,12 +6,12 @@ from sqlalchemy import (
     String,
     UUID
 )
-from app.db.database import Base
+from app.db.session import Base
 
 
-class Transaction(Base):
+class TransactionModel(Base):
     __tablename__ = "transactions"
-    transaction_id = Column(UUID(as_uuid=True), nullable=False)
+    transaction_id = Column(UUID(as_uuid=True), primary_key=True, nullable=False)
     timestamp = Column(DateTime, nullable=False)
     amount = Column(Float, nullable=False)
     currency = Column(String(3), nullable=False)

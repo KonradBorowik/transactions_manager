@@ -4,7 +4,6 @@ from datetime import datetime
 
 
 class Transaction(BaseModel):
-    __tablename__ = "transactions"
     transaction_id: UUID
     timestamp: datetime
     amount: float
@@ -12,3 +11,6 @@ class Transaction(BaseModel):
     customer_id: UUID
     product_id: UUID
     quantity: int
+
+    class Config:
+        from_attributes = True

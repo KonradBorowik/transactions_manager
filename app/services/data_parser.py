@@ -1,40 +1,37 @@
-import io
 from fastapi import UploadFile
 from pydantic import ValidationError
+from typing import Union
 
-from app.schemas.transaction import Transaction
+from app.schemas.transaction_schema import Transaction
 
-class InvalidLineLength(Exception):
-    pass
 
 class DataParser:
-    def __init__(self, uploaded_file: UploadFile) -> None:
-        self.file = uploaded_file
-
     def _parse_line(self, line: str, line_no: int) -> Transaction:
         try:
-            line_content = line.split(",")
-            if len(line_content) == 7:
+            items = [item.strip() for item in line.split(',') if item.strip()]
+            if len(items) == 7:
                 content_dict = {
-                    "transaction_id": line_content[0],
-                    "timestamp": line_content[1],
-                    "amount": line_content[2],
-                    "currency": line_content[3],
-                    "customer_id": line_content[4],
-                    "product_id": line_content[5],
-                    "quantity": line_content[6],
+                    "transaction_id": items[0],
+                    "timestamp": items[1],
+                    "amount": items[2],
+                    "currency": items[3],
+                    "customer_id": items[4],
+                    "product_id": items[5],
+                    "quantity": items[6],
                 }
                 return Transaction.model_validate(content_dict)
             else:
-                print(f"[Line {line_no}] Expected 7 items, got {len(line_content)}.")
+                print(f"[Line {line_no}] Expected 7 items, got {len(items)}.")
 
         except ValidationError:
             print(f"[Line {line_no}] Data validation failed.")
 
-    def parse_file(self) -> list[Transaction]:
+    def parse_file(self, file: UploadFile) -> list[Transaction]:
         transactions: list[Transaction] = []
-        for line_no, line in enumerate(self.file.file.readlines()):
+        for line_no, line in enumerate(file.file.readlines()):
             line: str = line.decode("utf-8").rstrip("\n")
-            transactions.append(self._parse_line(line=line.strip("\\n"), line_no=line_no))
+            transaction = self._parse_line(line=line.strip("\\n"), line_no=line_no)
+            if transaction:
+                transactions.append(transaction)
         
         return transactions
