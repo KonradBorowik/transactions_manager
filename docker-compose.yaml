@@ -12,5 +12,18 @@ services:
         - POSTGRES_PASSWORD=alterdata
         - POSTGRES_DB=alterdata_db
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    environment:
+      ENV: development
+    ports:
+      - "8000:8000"
+
 volumes:
   postgres_data:
