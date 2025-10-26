@@ -62,12 +62,32 @@ def get_product_summary(
     income_unconverted = get_amount(db=db, field_name="product_id", field_id=product_id)
     print(income_unconverted)
     sold_count = get_item_occurrences(db=db, item_id=product_id)
-    unique_clients = get_unique_count(db=db, field_name="product_id", field_id=product_id, entry_to_count="customer_id")
-
-    total_income = currency_conversion(income=income_unconverted)
+    unique_clients = get_unique_count(
+        db=db,
+        field_name="product_id",
+        field_id=product_id,
+        entry_to_count="customer_id"
+    )
 
     return {
         "items sold": sold_count,
-        "total income": total_income,
+        "total income": currency_conversion(income=income_unconverted),
         "unique clients": unique_clients
+    }
+
+
+def get_client_summary(db: Session, customer_id: UUID) -> dict:
+    income_unconverted = get_amount(db=db, field_name="customer_id", field_id=customer_id)
+    unique_products = get_unique_count(
+        db=db,
+        field_name="customer_id",
+        field_id=customer_id,
+        entry_to_count="product_id"
+    )
+    last_timestamp = get_latest_timestamp(db=db, field_name="customer_id", filter_id=customer_id)
+    
+    return {
+        "total income": currency_conversion(income=income_unconverted),
+        "unique products count": unique_products,
+        "last transaction": last_timestamp
     }
