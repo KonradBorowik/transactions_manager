@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import logging
 
 from app.api import (
     get_report,
@@ -10,9 +11,18 @@ from app.db.session import engine, Base
 
 class TransactionManagerApp:
     def __init__(self):
+        self._init_logging()
+        logging.info("Initializing Application...")
         self.app = FastAPI()
         self._init_database()
         self._init_routes()
+        logging.info("Application initialized successfully!")
+
+    def _init_logging(self):
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
 
     def _init_database(self):
         Base.metadata.create_all(bind=engine)
@@ -36,6 +46,6 @@ class TransactionManagerApp:
 
     def get_application(self) -> FastAPI:
         return self.app
-    
+
 
 app = TransactionManagerApp().get_application()

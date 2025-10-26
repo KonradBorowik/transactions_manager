@@ -26,7 +26,6 @@ class DataParserService:
         except ValidationError:
             print(f"[Line {line_no}] Data validation failed.")
 
-
     def parse_file(self, file: UploadFile) -> list[Transaction]:
         transactions: list[Transaction] = []
         for line_no, line in enumerate(file.file.readlines()):
@@ -36,7 +35,6 @@ class DataParserService:
                 transactions.append(transaction)
         
         return transactions
-
 
     def convert_to_pydantic(self, tr_models: list[TransactionModel]) -> list[Transaction]:
         transactions: Transaction = []
