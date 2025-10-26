@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from typing import Union
 from uuid import UUID
 
-from app.db.database import DatabaseOperations
+from app.db.database_operations import DatabaseOperations
 from app.schemas.transaction_schema import Transaction
 from app.models.transaction_model import TransactionModel
 

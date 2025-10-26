@@ -5,7 +5,7 @@ from fastapi import (
 )
 from sqlalchemy.orm import Session
 
-from app.db.database import get_db
+from app.db.database_operations import get_db
 from app.services.data_parser import DataParserService
 from app.services.db_service import DatabaseService
 
