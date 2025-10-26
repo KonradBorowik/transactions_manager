@@ -14,7 +14,7 @@ router = APIRouter()
 
 
 @router.get("/customer-summary/{customer_id}")
-def get_customer_report(customer_id: UUID, db: Session = Depends(get_db)):
+async def get_customer_report(customer_id: UUID, db: Session = Depends(get_db)):
     logging.info("Preparing customer summary.")
     db_service = DatabaseService(db=db)
     summary = db_service.get_client_summary(customer_id=customer_id)
@@ -27,7 +27,7 @@ def get_customer_report(customer_id: UUID, db: Session = Depends(get_db)):
 
 
 @router.get("/product-summary/{product_id}")
-def get_product_report(product_id: UUID, db: Session = Depends(get_db)):
+async def get_product_report(product_id: UUID, db: Session = Depends(get_db)):
     logging.info("Preparing product summary.")
     db_service = DatabaseService(db=db)
     summary = db_service.get_product_summary(product_id=product_id)
