@@ -8,9 +8,34 @@ from app.api import (
 from app.db.session import engine, Base
 
 
-Base.metadata.create_all(bind=engine)
+class TransactionManagerApp:
+    def __init__(self):
+        self.app = FastAPI()
+        self._init_database()
+        self._init_routes()
 
-app = FastAPI()
-app.include_router(upload_csv.router, prefix="/transactions", tags=["Upload CSV"])
-app.include_router(get_transactions.router, prefix="/transactions", tags=["Get Transactions"])
-app.include_router(get_report.router, prefix="/reports", tags=["Get Reports"])
+    def _init_database(self):
+        Base.metadata.create_all(bind=engine)
+
+    def _init_routes(self):
+        self.app.include_router(
+            upload_csv.router, 
+            prefix="/transactions", 
+            tags=["Upload CSV"]
+        )
+        self.app.include_router(
+            get_transactions.router, 
+            prefix="/transactions", 
+            tags=["Get Transactions"]
+        )
+        self.app.include_router(
+            get_report.router, 
+            prefix="/reports", 
+            tags=["Get Reports"]
+        )
+
+    def get_application(self) -> FastAPI:
+        return self.app
+    
+
+app = TransactionManagerApp().get_application()
