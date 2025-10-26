@@ -12,6 +12,7 @@ from app.services.db_service import DatabaseService
 
 router = APIRouter()
 
+
 @router.post("/upload")
 async def upload_csv(uploaded_file: UploadFile, db: Session = Depends(get_db)):
     if uploaded_file.filename.endswith(".csv"):
