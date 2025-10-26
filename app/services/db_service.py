@@ -19,8 +19,8 @@ def store_data(db: Session, data: list[Transaction]) -> None:
 def get_data(
     db: Session,
     filters: Union[dict[str, str], None] = None,
-    skip: int = 0,
-    limit: int = 20) -> list[Transaction]:
+    skip: int = -1,
+    limit: int = -1) -> list[Transaction]:
     if filters:
         tr_models: list[TransactionModel] = get_queried_from_db(
             db=db,

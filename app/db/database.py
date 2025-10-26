@@ -45,6 +45,8 @@ def get_queried_from_db(
         column = getattr(TransactionModel, key)
         if column:
             conditions.append(column == value)
-
-    query = select(TransactionModel).where(and_(*conditions)).offset(skip).limit(limit)
+    if skip > -1 and limit > -1:
+        query = select(TransactionModel).where(and_(*conditions)).offset(skip).limit(limit)
+    else:
+        query = select(TransactionModel).where(and_(*conditions))
     return db.execute(query).scalars().all()
