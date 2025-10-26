@@ -43,3 +43,19 @@ def get_client_summary(transactions: list[Transaction]) -> dict:
         "unique_items_count": len(unique_items),
         "last_transaction": last_timestamp
     }
+
+
+def get_product_summary(transactions: Transaction) -> dict:
+    total_spendings = 0
+    unique_items: list[UUID] = []
+    last_timestamp: datetime = None
+    for tr in transactions:
+        total_spendings += currency_conversion(amount=tr.amount, currency=tr.currency)
+        unique_items = add_unique_product(product_id=tr.product_id, unique_items=unique_items)
+        last_timestamp = check_if_last_timestamp(ts=tr.timestamp, last_ts=last_timestamp)
+
+    return {
+        "total_spendings": total_spendings,
+        "unique_items_count": len(unique_items),
+        "last_transaction": last_timestamp
+    }

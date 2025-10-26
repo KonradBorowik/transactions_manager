@@ -1,10 +1,15 @@
 from sqlalchemy.orm import Session
 from typing import Union
+from uuid import UUID
 
 from app.db.database import (
     get_all_from_db,
     get_queried_from_db,
-    store_in_db
+    store_in_db,
+    get_amount,
+    get_item_occurrences,
+    get_latest_timestamp,
+    get_unique_count
 )
 from app.schemas.transaction_schema import Transaction
 from app.models.transaction_model import TransactionModel
@@ -20,7 +25,7 @@ def get_data(
     db: Session,
     filters: Union[dict[str, str], None] = None,
     skip: int = -1,
-    limit: int = -1) -> list[Transaction]:
+    limit: int = -1) -> list[TransactionModel]:
     if filters:
         tr_models: list[TransactionModel] = get_queried_from_db(
             db=db,
@@ -35,8 +40,34 @@ def get_data(
             limit=limit
         )
 
-    transactions: Transaction = []
-    for tr_model in tr_models:
-        transactions.append(Transaction.model_validate(tr_model))
+    return tr_models
 
-    return transactions
+
+def currency_conversion(income: dict) -> float:
+    total = 0
+    for sum in income:
+        if sum[0] == "EUR":
+            total += sum[1] * 4.3
+        if sum[0] == "USD":
+            total += sum[1] * 4.0
+        if sum[0] == "PLN":
+            total += sum[1]
+
+    return total
+
+
+def get_product_summary(
+    db: Session,
+    product_id: UUID) -> list[TransactionModel]:
+    income_unconverted = get_amount(db=db, field_name="product_id", field_id=product_id)
+    print(income_unconverted)
+    sold_count = get_item_occurrences(db=db, item_id=product_id)
+    unique_clients = get_unique_count(db=db, field_name="product_id", field_id=product_id, entry_to_count="customer_id")
+
+    total_income = currency_conversion(income=income_unconverted)
+
+    return {
+        "items sold": sold_count,
+        "total income": total_income,
+        "unique clients": unique_clients
+    }
