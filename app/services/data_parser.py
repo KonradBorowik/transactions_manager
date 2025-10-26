@@ -3,10 +3,10 @@ from pydantic import ValidationError
 from typing import Union
 
 from app.schemas.transaction_schema import Transaction
+from app.models.transaction_model import TransactionModel
 
-
-class DataParser:
-    def _parse_line(self, line: str, line_no: int) -> Transaction:
+class DataParser:    
+    def parse_line(self, line: str, line_no: int) -> Transaction:
         try:
             items = [item.strip() for item in line.split(',') if item.strip()]
             if len(items) == 7:
@@ -30,7 +30,7 @@ class DataParser:
         transactions: list[Transaction] = []
         for line_no, line in enumerate(file.file.readlines()):
             line: str = line.decode("utf-8").rstrip("\n")
-            transaction = self._parse_line(line=line.strip("\\n"), line_no=line_no)
+            transaction = self.parse_line(line=line.strip("\\n"), line_no=line_no)
             if transaction:
                 transactions.append(transaction)
         
