@@ -1,17 +1,6 @@
 version: '3'
 
 services:
-  transactions_manager:
-    build: .
-    depends_on:
-      - db
-    volumes:
-      - ./:/app:ro
-    environment:
-      - DATABASE_URL=postgresql://alterdata:alterdata@db:5432/alterdata_db
-    ports:
-      - "8000:8000"
-
   db:
     image: postgres:alpine
     volumes:

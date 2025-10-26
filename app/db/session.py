@@ -3,9 +3,8 @@ from sqlalchemy.orm import (
     declarative_base,
     sessionmaker
 )
+from config import DATABASE_URL
 
-
-DATABASE_URL = "postgresql://alterdata:alterdata@localhost:5431/alterdata_db"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
