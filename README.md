@@ -1,3 +1,35 @@
+# Quick description
+This is a backend system for processing and aggregating transaction data. It allows users to upload transaction data via CSV files, validates and stores the data in a PostgreSQL database, and provides various API endpoints to retrieve and summarize transaction information.
+
+# Quickstart
+
+1. Prerequisites
+- Docker and Docker Compose installed and enabled on your machine.
+
+
+2. Clone the repository
+```
+git clone https://github.com/KonradBorowik/transactions_manager.git
+```
+
+3. Navigate to the project directory
+```
+cd transactions_manager
+```
+
+4. Build and start Docker containers with the app and the database
+```
+docker-compose up
+```
+
+5. Access the app's API documentation
+```
+localhost:8000/docs
+```
+
+
+# Description of the task
+
 Na co będziemy zwracać uwagę:
 
 1. Jakość kodu: Czystość, czytelność, zgodność z PEP8, dobre praktyki (np. SOLID w miarę możliwości).
