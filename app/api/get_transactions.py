@@ -23,7 +23,7 @@ def _create_filter(c_id: Union[str, None], p_id: Union[str, None]) -> dict:
     return filters
 
 
-@router.get("/transactions")
+@router.get("/")
 def get_transactions(skip: int = 0, limit: int = 20, customer_id: str = "", product_id: str = "", db: Session = Depends(get_db)):
     filters = _create_filter(c_id=customer_id, p_id=product_id)
     
@@ -35,7 +35,7 @@ def get_transactions(skip: int = 0, limit: int = 20, customer_id: str = "", prod
         return {"No entries found."}
 
 
-@router.get("/transactions/{transaction_id}")
+@router.get("/{transaction_id}")
 def get_transaction_by_id(transaction_id: UUID, db: Session = Depends(get_db)):
     transactions = get_data(db=db, filters={"transaction_id": transaction_id})
     if transactions:

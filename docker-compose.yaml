@@ -1,4 +1,4 @@
-version: '3s'
+version: '3'
 
 services:
   transactions_manager:
